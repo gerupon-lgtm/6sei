@@ -532,7 +532,9 @@ footer{position:relative;z-index:1;text-align:center;padding:0 0 24px;font-size:
   </div>
 
   <footer>
-    六星占術 × バイオリズム — Powered by <span id="footerModelLabel">AI</span><br>ver 1.7.0
+    六星占術 × バイオリズム — Powered by <span id="footerModelLabel">AI</span><br>
+    <!-- ver は APP_VERSION から JS で流し込む（手書きすると更新漏れで実際の版とずれる） -->
+    ver <span id="footerVersion"></span>
     <div class="footer-copy">© 2026 SIKUMI LAB</div>
   </footer>
 </div>
@@ -572,7 +574,12 @@ footer{position:relative;z-index:1;text-align:center;padding:0 0 24px;font-size:
 
 <script>
 const API_URL = 'https://test-flax-omega-29.vercel.app/api/rokuse_diagnose';
-const APP_VERSION = '1.7.1';
+const APP_VERSION = '1.7.2';
+// フッターの版表示は APP_VERSION を単一の出所にする
+{
+  const el = document.getElementById('footerVersion');
+  if (el) el.textContent = APP_VERSION;
+}
 
 // デフォルト生年月日（20年前）
 // ======== 日付入力ユーティリティ ========
