@@ -214,10 +214,12 @@ input::placeholder{color:var(--text3)}
 
 /* タブ */
 .tab-bar{display:flex;gap:4px;margin:20px 0 0;background:var(--surface2);border-radius:12px;padding:4px;border:1px solid rgba(167,139,250,.12)}
-.tab-btn{flex:1;padding:12px 0;border:none;border-radius:9px;background:transparent;color:var(--text2);font-size:14px;font-family:inherit;font-weight:600;cursor:pointer;transition:all .25s;letter-spacing:.5px}
+.tab-btn{flex:1 1 auto;padding:12px 8px;white-space:nowrap;border:none;border-radius:9px;background:transparent;color:var(--text2);font-size:14px;font-family:inherit;font-weight:600;cursor:pointer;transition:all .25s;letter-spacing:.5px}
 .tab-btn:hover{color:var(--text);background:rgba(167,139,250,.08)}
 .tab-btn.active{background:linear-gradient(135deg,var(--accent),var(--accent3));color:#fff;box-shadow:0 2px 12px rgba(192,132,252,.3)}
-.tab-pane{margin-top:12px;min-height:280px}
+/* タブ切替時にタブバーを画面上端まで送れるよう、中身が短いタブ（バイオリズム等）でも画面1枚分の高さを確保する */
+.tab-pane{margin-top:12px;min-height:280px;min-height:calc(100vh - 80px);min-height:calc(100svh - 80px)}
+@media(max-width:360px){.tab-btn{padding:12px 4px;font-size:13px;letter-spacing:0}}
 
 /* 週間・月間テーブル */
 .range-comment{background:var(--surface2);border-radius:10px;padding:14px 16px;margin-bottom:14px;font-size:14px;line-height:1.7;color:var(--text)}
@@ -570,7 +572,7 @@ footer{position:relative;z-index:1;text-align:center;padding:0 0 24px;font-size:
 
 <script>
 const API_URL = 'https://test-flax-omega-29.vercel.app/api/rokuse_diagnose';
-const APP_VERSION = '1.7.0';
+const APP_VERSION = '1.7.1';
 
 // デフォルト生年月日（20年前）
 // ======== 日付入力ユーティリティ ========
