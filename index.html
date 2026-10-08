@@ -214,7 +214,7 @@ input::placeholder{color:var(--text3)}
 
 /* タブ */
 .tab-bar{display:flex;gap:4px;margin:20px 0 0;background:var(--surface2);border-radius:12px;padding:4px;border:1px solid rgba(167,139,250,.12)}
-.tab-btn{flex:1 1 auto;padding:12px 8px;white-space:nowrap;border:none;border-radius:9px;background:transparent;color:var(--text2);font-size:14px;font-family:inherit;font-weight:600;cursor:pointer;transition:all .25s;letter-spacing:.5px}
+.tab-btn{flex:1 1 auto;padding:12px 8px;white-space:nowrap;-webkit-tap-highlight-color:transparent;border:none;border-radius:9px;background:transparent;color:var(--text2);font-size:14px;font-family:inherit;font-weight:600;cursor:pointer;transition:all .25s;letter-spacing:.5px}
 .tab-btn:hover{color:var(--text);background:rgba(167,139,250,.08)}
 .tab-btn.active{background:linear-gradient(135deg,var(--accent),var(--accent3));color:#fff;box-shadow:0 2px 12px rgba(192,132,252,.3)}
 /* タブ切替時にタブバーを画面上端まで送れるよう、中身が短いタブ（バイオリズム等）でも画面1枚分の高さを確保する */
@@ -574,7 +574,7 @@ footer{position:relative;z-index:1;text-align:center;padding:0 0 24px;font-size:
 
 <script>
 const API_URL = 'https://test-flax-omega-29.vercel.app/api/rokuse_diagnose';
-const APP_VERSION = '1.7.2';
+const APP_VERSION = '1.7.3';
 // フッターの版表示は APP_VERSION を単一の出所にする
 {
   const el = document.getElementById('footerVersion');
@@ -1290,8 +1290,12 @@ function switchTab(tab) {
   const shareEl = document.getElementById('shareBar');
   if (shareEl) shareEl.style.display = tab==='daily' ? '' : 'none';
   document.getElementById('shareMenu')?.classList.remove('open');
+  // バイオリズムのグラフはスクロールより前に、その場で描く。
+  // 以前は 150ms 遅らせて描いていたため、上へ送るスクロールの最中にグラフの大きさが変わり、
+  // スマホ（Android Chrome）でスクロールが途中で止まる・古い大きさのグラフが一瞬出る、という不具合があった。
+  // 表示直後でも offsetWidth が強制レイアウトで正しい幅を返すので、遅延は不要。
+  if (tab==='bio' && lastBioGraph) drawBioGraph(lastBioGraph, lastBioNames.a, lastBioNames.b);
   requestAnimationFrame(() => document.getElementById('tabBar').scrollIntoView({behavior:'smooth',block:'start'}));
-  if (tab==='bio' && lastBioGraph) setTimeout(() => drawBioGraph(lastBioGraph, lastBioNames.a, lastBioNames.b), 150);
 }
 
 // ========== バイオリズムグラフ ==========
